@@ -40,6 +40,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return the id of the document to be printed.
      */
+    @Override
     public long getJobId() {
         return jobId;
     }
@@ -50,6 +51,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return the name of the document to be printed.
      */
+    @Override
     public String getJobName() {
         return jobName;
     }
@@ -60,6 +62,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return the paper size  of the document to be printed.
      */
+    @Override
     public Paper.SIZE getPaperSize() {
         return paperSize;
     }
@@ -67,12 +70,14 @@ public class SchoolPrintJob implements PrintJob {
     /**
      * Print the document
      */
+    @Override
     public void print() {
     }
 
     /**
      * Cancel the printing of the document
      */
+    @Override
     public void cancel() {
 
     }
@@ -82,6 +87,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return cost of the printing this job
      */
+    @Override
     public BigDecimal cost() throws PrintCalculationException {
         return PrintCostCalculator.getInstance().calculateCost(this);
     }
@@ -91,6 +97,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return true if the printed job is double sided ,else returns false
      */
+    @Override
     public boolean isDoubleSided() {
         return doubleSided;
     }
@@ -101,6 +108,7 @@ public class SchoolPrintJob implements PrintJob {
      *
      * @return gets the total no of pages in the document printed
      */
+    @Override
     public int getTotalNumberOfPages() {
         return totalNumberOfPages;
     }
@@ -216,6 +224,7 @@ public class SchoolPrintJob implements PrintJob {
 
     /**
      * Validate that the input number is not less than or equal to 0
+     *
      * @param jobId -jobid of the job the being printed.
      * @throws InvalidInputException
      */

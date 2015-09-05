@@ -60,6 +60,7 @@ public class SchoolPrintJobTest {
 
     /**
      * Test when totalNoOfPages,noOfColorPages,doubleSided values are not provided
+     *
      * @throws Exception
      */
     @Test
@@ -69,25 +70,28 @@ public class SchoolPrintJobTest {
     }
 
     @Test
-    public void testCostWhenAllValuesProvided()throws Exception{
+    public void testCostWhenAllValuesProvided() throws Exception {
         BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
-        assertCost(4.75,cost);
+        assertCost(4.75, cost);
     }
 
     /**
      * Two SchoolPrintJob instances are equal only when their jobids are equal
+     *
      * @throws Exception
      */
     @Test
-    public void testEqualsSuccess() throws Exception{
+    public void testEqualsSuccess() throws Exception {
         assertTrue(new SchoolPrintJob.SchoolPrintJobBuilder(451).build().equals(new SchoolPrintJob.SchoolPrintJobBuilder(451).build()));
     }
+
     /**
      * Two SchoolPrintJob instance jobids are not equal.
+     *
      * @throws Exception
      */
     @Test
-    public void testEqualsFailure() throws Exception{
+    public void testEqualsFailure() throws Exception {
         assertFalse(new SchoolPrintJob.SchoolPrintJobBuilder(555).build().equals(new SchoolPrintJob.SchoolPrintJobBuilder(451).build()));
     }
 

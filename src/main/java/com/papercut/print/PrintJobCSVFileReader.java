@@ -16,11 +16,12 @@ import java.util.List;
 
 /**
  * Class to read print jobs from CSV file.
+ * Its a Singleton class.
  * Created by nareshm on 4/09/2015.
  */
-public class PrintJobCSVFileReader {
+public class PrintJobCSVFileReader implements CSVFileReader {
     private static final Logger logger = LoggerFactory.getLogger(PrintJobCSVFileReader.class);
-    private volatile static PrintJobCSVFileReader uniqueInstance;
+    private volatile static CSVFileReader uniqueInstance;
 
     /**
      * Constructor should be private for a singleton class
@@ -34,7 +35,7 @@ public class PrintJobCSVFileReader {
      *
      * @return a single unique instance.
      */
-    public static PrintJobCSVFileReader getInstance() {
+    public static CSVFileReader getInstance() {
         if (uniqueInstance == null) {
             synchronized (PrintJobCSVFileReader.class) {
                 if (uniqueInstance == null) {
@@ -45,6 +46,7 @@ public class PrintJobCSVFileReader {
         return uniqueInstance;
     }
 
+    @Override
     public List<PrintJob> createPrintJobs(String csvFile) throws PrintCalculationException {
         if (csvFile == null || csvFile.isEmpty()) {
             logger.error("FileName is invalid {}", csvFile);
@@ -74,8 +76,8 @@ public class PrintJobCSVFileReader {
         } catch (InvalidInputException e) {
             logger.error("Input value to SchoolPrintJob is Invalid");
             throw new PrintCalculationException("Input value to SchoolPrintJob is Invalid");
-        } catch (IOException |ArrayIndexOutOfBoundsException e) {
-            logger.error("Error reading the csv file {}",csvFile);
+        } catch (IOException | ArrayIndexOutOfBoundsException e) {
+            logger.error("Error reading the csv file {}", csvFile);
             throw new PrintCalculationException("Error reading the csv file");
         } finally {
             if (in != null) {
@@ -89,7 +91,7 @@ public class PrintJobCSVFileReader {
         return printJobs;
     }
 
-    private int getIntValueFromCSV(String value, long i) throws PrintCalculationException {
+    private static int getIntValueFromCSV(String value, long i) throws PrintCalculationException {
         if (value == null) {
             logger.error("CSV Record at line number {} is invalid", i);
             throw new PrintCalculationException("CSV record is invalid");

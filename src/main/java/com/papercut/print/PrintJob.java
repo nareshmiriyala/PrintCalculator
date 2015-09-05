@@ -11,18 +11,21 @@ import java.math.BigDecimal;
 public interface PrintJob {
     /**
      * Get the job id
+     *
      * @return jobId
      */
     long getJobId();
 
     /**
      * Get the job name of the print job.
+     *
      * @return jobName
      */
     String getJobName();
 
     /**
      * Get the paper size of the print job.
+     *
      * @return size of papre
      */
     Paper.SIZE getPaperSize();
@@ -46,18 +49,21 @@ public interface PrintJob {
 
     /**
      * check if the document to printed is double sided.
+     *
      * @return if the print job is double sided
      */
     boolean isDoubleSided();
 
     /**
      * get the total number of pages to be printed by this job.
+     *
      * @return total number of pages being printed in this job
      */
     int getTotalNumberOfPages();
 
     /**
      * Get the total of color pages printed by this job.
+     *
      * @return total number of color pages printed in this job
      */
     int getNoOfColorPages();

@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class PrintJobCSVReaderTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
+
     @Test
     public void testCreatePrintJobs() throws Exception {
         List<PrintJob> printJobs = PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
@@ -36,6 +37,7 @@ public class PrintJobCSVReaderTest {
         expectedEx.expectMessage("Error reading the csv file");
         PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobsinvalidcsv.csv");
     }
+
     @Test
     public void testCreatePrintJobsInvalidTotalPages() throws Exception {
         expectedEx.expect(PrintCalculationException.class);
