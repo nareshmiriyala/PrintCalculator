@@ -17,11 +17,12 @@ import java.util.List;
  */
 public class PrintCalculatorApp {
     private static final Logger logger = LoggerFactory.getLogger(PrintCalculatorApp.class);
+    public static final String CSV_FILE = "src/test/resources/printjobs.csv";
 
     public static void main(String[] args) {
-        System.out.println("Reading print Jobs from file");
+        System.out.println("Reading print Jobs from file "+CSV_FILE);
         try {
-            List<PrintJob> printJobs = CSVPrintJobReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
+            List<PrintJob> printJobs = CSVPrintJobReader.getInstance().createPrintJobs(CSV_FILE);
             BigDecimal totalCost = BigDecimal.ZERO;
             System.out.println("Job details and the cost of printing");
             for (PrintJob printJob : printJobs) {
