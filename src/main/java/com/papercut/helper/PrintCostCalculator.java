@@ -1,6 +1,7 @@
 package com.papercut.helper;
 
 import com.papercut.exceptions.PrintCalculationException;
+import com.papercut.print.Paper;
 import com.papercut.print.SchoolPrintJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +43,11 @@ public class PrintCostCalculator {
     /**
      * Enum for storing the single sided page print costs.
      */
-    private enum SINGLE_SIDED_COST {
+    private enum A4_SINGLE_SIDED_COST {
         BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.15)), COLOUR_PAGE(BigDecimal.valueOf(0.25));
         private BigDecimal cost;
 
-        SINGLE_SIDED_COST(BigDecimal cost) {
+        A4_SINGLE_SIDED_COST(BigDecimal cost) {
             this.cost = cost;
         }
 
@@ -59,11 +60,11 @@ public class PrintCostCalculator {
     /**
      * Enum for the double sided page print costs.
      */
-    private enum DOUBLE_SIDED_COST {
+    private enum A4_DOUBLE_SIDED_COST {
         BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.10)), COLOUR_PAGE(BigDecimal.valueOf(0.20));
         private BigDecimal cost;
 
-        DOUBLE_SIDED_COST(BigDecimal cost) {
+        A4_DOUBLE_SIDED_COST(BigDecimal cost) {
             this.cost = cost;
         }
 
@@ -87,13 +88,16 @@ public class PrintCostCalculator {
         int colorPages = schoolPrintJob.getNoOfColorPages();
         int blackAndWhitePages = schoolPrintJob.getTotalNumberOfPages() - colorPages;
         logger.debug(" Started calculating the cost of the schoolPrintJob {}", schoolPrintJob);
-        if (schoolPrintJob.isDoubleSided()) {
-            return BigDecimal.valueOf(blackAndWhitePages).multiply(DOUBLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
-                    add(BigDecimal.valueOf(colorPages).multiply(DOUBLE_SIDED_COST.COLOUR_PAGE.getCost()));
-        } else {
-            return BigDecimal.valueOf(blackAndWhitePages).multiply(SINGLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
-                    add(BigDecimal.valueOf(colorPages).multiply(SINGLE_SIDED_COST.COLOUR_PAGE.getCost()));
+        if (schoolPrintJob.getPaperSize() != null && schoolPrintJob.getPaperSize().equals(Paper.SIZE.A4)) {
+            if (schoolPrintJob.isDoubleSided()) {
+                return BigDecimal.valueOf(blackAndWhitePages).multiply(A4_DOUBLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
+                        add(BigDecimal.valueOf(colorPages).multiply(A4_DOUBLE_SIDED_COST.COLOUR_PAGE.getCost()));
+            } else {
+                return BigDecimal.valueOf(blackAndWhitePages).multiply(A4_SINGLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
+                        add(BigDecimal.valueOf(colorPages).multiply(A4_SINGLE_SIDED_COST.COLOUR_PAGE.getCost()));
+            }
         }
-
+        logger.error("Can't find any cost rule to apply for paper size {} ", schoolPrintJob.getPaperSize());
+        throw new PrintCalculationException("No valid paper size found to calculate cost");
     }
 }

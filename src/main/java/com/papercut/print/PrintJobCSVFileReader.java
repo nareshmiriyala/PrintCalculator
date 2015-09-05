@@ -68,7 +68,9 @@ public class PrintJobCSVFileReader implements CSVFileReader {
                 //default value of doubleSided is false if nothing provided in the csv file
                 boolean doubleSided = Boolean.parseBoolean(record.get(2).trim().isEmpty() ? "false" : record.get(2).trim());
                 //build the A4 size printer job
-                printJobs.add(new SchoolPrintJob.SchoolPrintJobBuilder(jobId++).withTotalPrintPages(totalNumberOfPages).withPaperSize(Paper.SIZE.A4).withNoOfColorPages(noOfColorPages).isDoubleSidedPrint(doubleSided).build());
+                printJobs.add(new SchoolPrintJob.SchoolPrintJobBuilder(jobId).withJobName("A4_PRINT_JOB_"+jobId).withTotalPrintPages(totalNumberOfPages).withPaperSize(Paper.SIZE.A4).withNoOfColorPages(noOfColorPages).isDoubleSidedPrint(doubleSided).build());
+                //increment jobId
+                jobId++;
             }
         } catch (FileNotFoundException e) {
             logger.error("Not able to find the file {}", csvFile);

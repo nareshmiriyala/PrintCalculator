@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Print Calculator App Test.
  * Created by nareshm on 4/09/2015.
@@ -20,10 +22,10 @@ public class PrintCalculator {
         BigDecimal totalCost = BigDecimal.ZERO;
         for (PrintJob printJob : printJobs) {
             BigDecimal cost = printJob.cost();
-            System.out.println("Job details:" + printJob + ", cost of print jobs:" + Utility.getRoundedValue(cost));
+            System.out.println("" + printJob + ", cost of print:" + Utility.getRoundedValue(cost));
             totalCost = totalCost.add(cost);
         }
         System.out.println("Total cost of all print jobs:" + Utility.getRoundedValue(totalCost));
-
+        assertEquals("Total cost of all jobs",Utility.getRoundedValue(BigDecimal.valueOf(64.10)),Utility.getRoundedValue(totalCost));
     }
 }

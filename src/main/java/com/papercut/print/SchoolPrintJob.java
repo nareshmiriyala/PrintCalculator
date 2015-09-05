@@ -253,13 +253,12 @@ public class SchoolPrintJob implements PrintJob {
 
     @Override
     public String toString() {
-        return "SchoolPrintJob{" +
-                "jobId=" + jobId +
-                ", jobName='" + jobName + '\'' +
-                ", paperSize=" + paperSize +
-                ", doubleSided=" + doubleSided +
-                ", totalNumberOfPages=" + totalNumberOfPages +
-                ", noOfColorPages=" + noOfColorPages +
-                '}';
+        return "Job ID=" + jobId +
+                ", Job Name='" + jobName + '\'' +
+                ", Paper Size=" + paperSize +
+                ", Total No Of Pages=" + totalNumberOfPages +
+                ", No of Color Pages=" + noOfColorPages +
+                ", Is Double Sided=" + doubleSided
+                ;
     }
 }

@@ -1,6 +1,7 @@
 package com.papercut.junit.print;
 
 import com.papercut.exceptions.InvalidInputException;
+import com.papercut.print.Paper;
 import com.papercut.print.SchoolPrintJob;
 import com.papercut.util.Utility;
 import org.junit.After;
@@ -37,7 +38,7 @@ public class SchoolPrintJobTest {
      */
     @Test
     public void testCostWhenNoOfColorsAndDoubleSidedValuesNotProvided() throws Exception {
-        schoolPrintJob = new SchoolPrintJob.SchoolPrintJobBuilder(1).withTotalPrintPages(10).build();
+        schoolPrintJob = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(10).build();
         BigDecimal cost = schoolPrintJob.cost();
         assertCost(1.50, cost);
     }
@@ -65,13 +66,13 @@ public class SchoolPrintJobTest {
      */
     @Test
     public void testCostWhenAllThreeValuesNotProvided() throws Exception {
-        schoolPrintJob = new SchoolPrintJob.SchoolPrintJobBuilder(1).build();
+        schoolPrintJob = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).build();
         assertCost(0, schoolPrintJob.cost());
     }
 
     @Test
     public void testCostWhenAllValuesProvided() throws Exception {
-        BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
+        BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
         assertCost(4.75, cost);
     }
 
