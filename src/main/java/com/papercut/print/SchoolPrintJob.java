@@ -186,7 +186,7 @@ public class SchoolPrintJob implements PrintJob {
         /**
          * Sets the total number of pages printed
          *
-         * @param totalNumberOfPages
+         * @param totalNumberOfPages - total number of pages being printed by the job.
          */
         public SchoolPrintJobBuilder withTotalPrintPages(int totalNumberOfPages) throws InvalidInputException {
             validateInputNumber(totalNumberOfPages);
@@ -216,7 +216,7 @@ public class SchoolPrintJob implements PrintJob {
 
     /**
      * Validate that the input number is not less than or equal to 0
-     * @param jobId
+     * @param jobId -jobid of the job the being printed.
      * @throws InvalidInputException
      */
     private static void validateInputNumber(long jobId) throws InvalidInputException {

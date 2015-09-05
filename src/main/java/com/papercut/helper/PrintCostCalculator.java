@@ -4,9 +4,7 @@ import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.SchoolPrintJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
-import java.util.Currency;
 
 /**
  * Helper class to calculate the total cost of printing a job.
@@ -77,8 +75,8 @@ public class PrintCostCalculator {
     /**
      * Calculate the total cost of the printing
      *
-     * @param schoolPrintJob
-     * @return
+     * @param schoolPrintJob- input the schoolPrintJob containing the required values for cost calculation
+     * @return cost of printing the job.
      */
     public static BigDecimal calculateCost(SchoolPrintJob schoolPrintJob) throws PrintCalculationException {
         if (schoolPrintJob == null) {

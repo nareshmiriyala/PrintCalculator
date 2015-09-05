@@ -8,13 +8,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.math.BigDecimal;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 
 /**
+ * Test the printing cost calculator class
  * Created by nareshm on 5/09/2015.
  */
 @RunWith(PowerMockRunner.class)

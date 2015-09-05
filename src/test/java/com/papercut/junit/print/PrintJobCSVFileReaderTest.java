@@ -2,12 +2,9 @@ package com.papercut.junit.print;
 
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.PrintJobCSVFileReader;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
 

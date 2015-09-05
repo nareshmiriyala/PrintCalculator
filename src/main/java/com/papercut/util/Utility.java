@@ -10,8 +10,8 @@ import java.math.RoundingMode;
 public class Utility {
     /**
      * Round the input big decimal value to 2 decimal points.
-     * @param value
-     * @return
+     * @param value - input value which should be rounded
+     * @return rounded big decimal value
      */
     public static BigDecimal getRoundedValue(BigDecimal value) {
         return value.setScale(2, RoundingMode.CEILING);
