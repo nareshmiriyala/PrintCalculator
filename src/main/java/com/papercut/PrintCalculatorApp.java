@@ -29,7 +29,7 @@ public class PrintCalculatorApp {
                 System.out.println("" + printJob + ", Cost of printing $" + Utility.getRoundedValue(cost));
                 totalCost = totalCost.add(cost);
             }
-            System.out.println("Total cost of all print jobs $" + Utility.getRoundedValue(totalCost));
+            System.out.println("Total cost of all print  $" + Utility.getRoundedValue(totalCost));
         } catch (PrintCalculationException e) {
             logger.error("Error during Print Calculation", e);
         }
