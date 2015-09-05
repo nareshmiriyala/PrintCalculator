@@ -1,41 +1,27 @@
-package com.papercut.print;
+package com.papercut.regression;
 
 import com.papercut.exceptions.PrintCalculationException;
-import org.junit.Before;
+import com.papercut.print.PrintJob;
+import com.papercut.print.PrintJobCSVFileReader;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Unit test for PrintJobCSVFileReader class
+ * Integration test for PrintJobCSVFileReader class.
  * Created by nareshm on 5/09/2015.
  */
-@RunWith(PowerMockRunner.class)
-public class PrintJobCSVFileReaderTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @Test
-    public void testGetInstance() throws Exception {
-        assertNotNull("Instance shouldn't be null", PrintJobCSVFileReader.getInstance());
-    }
-
+public class PrintJobCSVReaderTest {
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
     @Test
     public void testCreatePrintJobs() throws Exception {
         List<PrintJob> printJobs = PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
         assertEquals("Size of the printJobs list should be 4", 4, printJobs.size());
-    }
-
-    @Test(expected = PrintCalculationException.class)
-    public  void testCreatePrintJobsInvalidInputFile() throws Exception{
-        PrintJobCSVFileReader.getInstance().createPrintJobs(null);
     }
 
     @Test
@@ -43,8 +29,17 @@ public class PrintJobCSVFileReaderTest {
         List<PrintJob> printJobs = PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobemptyfile.csv");
         assertEquals("Size of the printJobs list should be 0", 0, printJobs.size());
     }
-    @Test(expected = PrintCalculationException.class)
+
+    @Test
     public void testCreatePrintJobsInvalidCSVFile() throws Exception {
+        expectedEx.expect(PrintCalculationException.class);
+        expectedEx.expectMessage("Error reading the csv file");
         PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobsinvalidcsv.csv");
+    }
+    @Test
+    public void testCreatePrintJobsInvalidTotalPages() throws Exception {
+        expectedEx.expect(PrintCalculationException.class);
+        expectedEx.expectMessage("CSV record is invalid");
+        PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobsInvalidTotalPages.csv");
     }
 }

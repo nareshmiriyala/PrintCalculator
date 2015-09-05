@@ -1,6 +1,7 @@
-package com.papercut.print;
+package com.papercut.junit.print;
 
 import com.papercut.exceptions.InvalidInputException;
+import com.papercut.print.SchoolPrintJob;
 import com.papercut.util.Utility;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +17,6 @@ import static org.junit.Assert.*;
  * Unit Test for SchoolPrintJobTest.
  * Created by nareshm on 5/09/2015.
  */
-@RunWith(PowerMockRunner.class)
 public class SchoolPrintJobTest {
 
     private SchoolPrintJob schoolPrintJob;
@@ -45,7 +45,7 @@ public class SchoolPrintJobTest {
     }
 
     private void assertCost(double actual, BigDecimal cost) {
-        assertEquals("Value should be 1.50", Utility.getRoundedValue(BigDecimal.valueOf(actual)), Utility.getRoundedValue(cost));
+        assertEquals("Cost value is invalid", Utility.getRoundedValue(BigDecimal.valueOf(actual)), Utility.getRoundedValue(cost));
 
     }
 
@@ -60,10 +60,38 @@ public class SchoolPrintJobTest {
         schoolPrintJob.cost();
     }
 
+    /**
+     * Test when totalNoOfPages,noOfColorPages,doubleSided values are not provided
+     * @throws Exception
+     */
     @Test
     public void testCostWhenAllThreeValuesNotProvided() throws Exception {
         schoolPrintJob = new SchoolPrintJob.SchoolPrintJobBuilder(1).build();
         assertCost(0, schoolPrintJob.cost());
     }
+
+    @Test
+    public void testCostWhenAllValuesProvided()throws Exception{
+        BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
+        assertCost(4.75,cost);
+    }
+
+    /**
+     * Two SchoolPrintJob instances are equal only when their jobids are equal
+     * @throws Exception
+     */
+    @Test
+    public void testEqualsSuccess() throws Exception{
+        assertTrue(new SchoolPrintJob.SchoolPrintJobBuilder(451).build().equals(new SchoolPrintJob.SchoolPrintJobBuilder(451).build()));
+    }
+    /**
+     * Two SchoolPrintJob instance jobids are not equal.
+     * @throws Exception
+     */
+    @Test
+    public void testEqualsFailure() throws Exception{
+        assertFalse(new SchoolPrintJob.SchoolPrintJobBuilder(555).build().equals(new SchoolPrintJob.SchoolPrintJobBuilder(451).build()));
+    }
+
 
 }

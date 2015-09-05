@@ -6,10 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 /**
- * Helper class to calculate the total cost of printing for a job.
- * Its a Singleton object.
+ * Helper class to calculate the total cost of printing a job.
+ * Its a Singleton class.
  * Created by nareshm on 4/09/2015.
  */
 public class PrintCostCalculator {
@@ -39,32 +40,28 @@ public class PrintCostCalculator {
         return uniqueInstance;
     }
 
+    /**
+     * Enum for storing the single sided page print costs.
+     */
     private enum SINGLE_SIDED_COST {
-        BLACK_AND_WHITE_PAGE(new BigDecimal(0.15)), COLOUR_PAGE(new BigDecimal(0.25));
+        BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.15)), COLOUR_PAGE(BigDecimal.valueOf(0.25));
         private BigDecimal cost;
 
         SINGLE_SIDED_COST(BigDecimal cost) {
             this.cost = cost;
         }
 
-        @Override
-        public String toString() {
-            return "DOUBLE_SIDED_COST{" +
-                    "cost=" + cost +
-                    '}';
-        }
-
         public BigDecimal getCost() {
             return cost;
         }
 
-        public void setCost(BigDecimal cost) {
-            this.cost = cost;
-        }
     }
 
+    /**
+     * Enum for the double sided page print costs.
+     */
     private enum DOUBLE_SIDED_COST {
-        BLACK_AND_WHITE_PAGE(new BigDecimal(0.10)), COLOUR_PAGE(new BigDecimal(0.20));
+        BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.10)), COLOUR_PAGE(BigDecimal.valueOf(0.20));
         private BigDecimal cost;
 
         DOUBLE_SIDED_COST(BigDecimal cost) {
@@ -75,16 +72,6 @@ public class PrintCostCalculator {
             return cost;
         }
 
-        public void setCost(BigDecimal cost) {
-            this.cost = cost;
-        }
-
-        @Override
-        public String toString() {
-            return "DOUBLE_SIDED_COST{" +
-                    "cost=" + cost +
-                    '}';
-        }
     }
 
     /**
@@ -94,16 +81,19 @@ public class PrintCostCalculator {
      * @return
      */
     public static BigDecimal calculateCost(SchoolPrintJob schoolPrintJob) throws PrintCalculationException {
-        if(schoolPrintJob==null){
+        if (schoolPrintJob == null) {
             logger.error("SchoolPrintJob can't be null");
             throw new PrintCalculationException("SchoolPrintJob can't be null");
         }
-        int totalNoOfBlackAndWhitePages = schoolPrintJob.getTotalNumberOfPages() - schoolPrintJob.getNoOfColorPages();
-        logger.debug(" Started calculating the cost of the schoolPrintJob {}",schoolPrintJob);
+        int colorPages = schoolPrintJob.getNoOfColorPages();
+        int blackAndWhitePages = schoolPrintJob.getTotalNumberOfPages() - colorPages;
+        logger.debug(" Started calculating the cost of the schoolPrintJob {}", schoolPrintJob);
         if (schoolPrintJob.isDoubleSided()) {
-            return BigDecimal.valueOf(totalNoOfBlackAndWhitePages).multiply(DOUBLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).add(BigDecimal.valueOf(schoolPrintJob.getNoOfColorPages()).multiply(DOUBLE_SIDED_COST.COLOUR_PAGE.getCost()));
+            return BigDecimal.valueOf(blackAndWhitePages).multiply(DOUBLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
+                    add(BigDecimal.valueOf(colorPages).multiply(DOUBLE_SIDED_COST.COLOUR_PAGE.getCost()));
         } else {
-            return BigDecimal.valueOf(totalNoOfBlackAndWhitePages).multiply(SINGLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).add(BigDecimal.valueOf(schoolPrintJob.getNoOfColorPages()).multiply(SINGLE_SIDED_COST.COLOUR_PAGE.getCost()));
+            return BigDecimal.valueOf(blackAndWhitePages).multiply(SINGLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
+                    add(BigDecimal.valueOf(colorPages).multiply(SINGLE_SIDED_COST.COLOUR_PAGE.getCost()));
         }
 
     }
