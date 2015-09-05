@@ -3,7 +3,6 @@ package com.papercut.helper;
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.Paper;
 import com.papercut.print.PrintJob;
-import com.papercut.print.SchoolPrintJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
