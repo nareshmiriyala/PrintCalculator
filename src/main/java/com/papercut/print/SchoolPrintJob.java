@@ -223,13 +223,13 @@ public class SchoolPrintJob implements PrintJob {
     }
 
     /**
-     * Validate that the input number is not less than or equal to 0
+     * Validate that the input number is not less than  0
      *
      * @param jobId -jobid of the job the being printed.
      * @throws InvalidInputException
      */
     private static void validateInputNumber(long jobId) throws InvalidInputException {
-        if (jobId <= 0) {
+        if (jobId < 0) {
             logger.error("Value can't be {}", jobId);
             throw new InvalidInputException("Input is invalid.");
         }
