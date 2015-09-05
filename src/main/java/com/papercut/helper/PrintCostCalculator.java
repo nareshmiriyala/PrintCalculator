@@ -2,6 +2,7 @@ package com.papercut.helper;
 
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.Paper;
+import com.papercut.print.PrintJob;
 import com.papercut.print.SchoolPrintJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * Its a Singleton class.
  * Created by nareshm on 4/09/2015.
  */
-public class PrintCostCalculator {
+public class PrintCostCalculator implements CostCalculator {
     private static final Logger logger = LoggerFactory.getLogger(PrintCostCalculator.class);
     private volatile static PrintCostCalculator uniqueInstance;
 
@@ -29,7 +30,7 @@ public class PrintCostCalculator {
      *
      * @return a single unique instance.
      */
-    public static PrintCostCalculator getInstance() {
+    public static CostCalculator getInstance() {
         if (uniqueInstance == null) {
             synchronized (PrintCostCalculator.class) {
                 if (uniqueInstance == null) {
@@ -80,7 +81,7 @@ public class PrintCostCalculator {
      * @param schoolPrintJob- input the schoolPrintJob containing the required values for cost calculation
      * @return cost of printing the job.
      */
-    public static BigDecimal calculateCost(SchoolPrintJob schoolPrintJob) throws PrintCalculationException {
+    public BigDecimal calculateCost(PrintJob schoolPrintJob) throws PrintCalculationException {
         if (schoolPrintJob == null) {
             logger.error("SchoolPrintJob can't be null");
             throw new PrintCalculationException("SchoolPrintJob can't be null");

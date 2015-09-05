@@ -19,27 +19,27 @@ import java.util.List;
  * Its a Singleton class.
  * Created by nareshm on 4/09/2015.
  */
-public class PrintJobCSVFileReader implements CSVFileReader {
-    private static final Logger logger = LoggerFactory.getLogger(PrintJobCSVFileReader.class);
-    private volatile static CSVFileReader uniqueInstance;
+public class CSVPrintJobReader implements PrintJobReader {
+    private static final Logger logger = LoggerFactory.getLogger(CSVPrintJobReader.class);
+    private volatile static PrintJobReader uniqueInstance;
 
     /**
      * Constructor should be private for a singleton class
      */
-    private PrintJobCSVFileReader() {
+    private CSVPrintJobReader() {
 
     }
 
     /**
-     * Create a unique instance of the PrintJobCSVFileReader.
+     * Create a unique instance of the CSVPrintJobReader.
      *
      * @return a single unique instance.
      */
-    public static CSVFileReader getInstance() {
+    public static PrintJobReader getInstance() {
         if (uniqueInstance == null) {
-            synchronized (PrintJobCSVFileReader.class) {
+            synchronized (CSVPrintJobReader.class) {
                 if (uniqueInstance == null) {
-                    uniqueInstance = new PrintJobCSVFileReader();
+                    uniqueInstance = new CSVPrintJobReader();
                 }
             }
         }

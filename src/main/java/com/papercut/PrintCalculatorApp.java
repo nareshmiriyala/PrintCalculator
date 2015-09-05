@@ -1,8 +1,8 @@
 package com.papercut;
 
 import com.papercut.exceptions.PrintCalculationException;
+import com.papercut.print.CSVPrintJobReader;
 import com.papercut.print.PrintJob;
-import com.papercut.print.PrintJobCSVFileReader;
 import com.papercut.util.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class PrintCalculatorApp {
     public static void main(String[] args) {
         System.out.println("Reading print Jobs from file");
         try {
-            List<PrintJob> printJobs = PrintJobCSVFileReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
+            List<PrintJob> printJobs = CSVPrintJobReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
             BigDecimal totalCost = BigDecimal.ZERO;
             System.out.println("Job details and the cost of printing");
             for (PrintJob printJob : printJobs) {

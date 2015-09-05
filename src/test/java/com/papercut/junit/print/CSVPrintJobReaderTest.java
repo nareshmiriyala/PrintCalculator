@@ -1,7 +1,7 @@
 package com.papercut.junit.print;
 
 import com.papercut.exceptions.PrintCalculationException;
-import com.papercut.print.PrintJobCSVFileReader;
+import com.papercut.print.CSVPrintJobReader;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,10 +9,10 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for PrintJobCSVFileReader class
+ * Unit test for CSVPrintJobReader class
  * Created by nareshm on 5/09/2015.
  */
-public class PrintJobCSVFileReaderTest {
+public class CSVPrintJobReaderTest {
 
     private String csvFile;
 
@@ -21,14 +21,14 @@ public class PrintJobCSVFileReaderTest {
 
     @Test
     public void testGetInstance() throws Exception {
-        assertNotNull("Instance shouldn't be null", PrintJobCSVFileReader.getInstance());
+        assertNotNull("Instance shouldn't be null", CSVPrintJobReader.getInstance());
     }
 
     @Test
     public void testCreatePrintJobsInvalidInputFile() throws Exception {
         expectedEx.expect(PrintCalculationException.class);
         expectedEx.expectMessage("CSV FileName is invalid");
-        PrintJobCSVFileReader.getInstance().createPrintJobs(csvFile);
+        CSVPrintJobReader.getInstance().createPrintJobs(csvFile);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class PrintJobCSVFileReaderTest {
         csvFile = "testname";
         expectedEx.expect(PrintCalculationException.class);
         expectedEx.expectMessage("Not able to find the file");
-        PrintJobCSVFileReader.getInstance().createPrintJobs(csvFile);
+        CSVPrintJobReader.getInstance().createPrintJobs(csvFile);
     }
 
 }
