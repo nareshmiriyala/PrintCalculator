@@ -56,6 +56,7 @@ public class PrintCostCalculator implements CostCalculator {
 
     /**
      * Insert print cost data to the costDataSet.
+     *
      * @param printCostData
      */
     @Override
@@ -84,7 +85,7 @@ public class PrintCostCalculator implements CostCalculator {
         PrintCostData printJobCostData = new PrintCostData(printJob.getPaperSize(), printJob.isDoubleSided() ? Paper.SIDE.DOUBLE_SIDED : Paper.SIDE.SINGLE_SIDED);
         if (!costDataSet.contains(printJobCostData)) {
             logger.error("Can't find any cost rule to apply for paper size {} ", printJob.getPaperSize());
-            throw new PrintCalculationException("No valid paper size found to calculate cost");
+            throw new PrintCalculationException("No valid rule to calculate cost");
         }
         BigDecimal finalCost = BigDecimal.ZERO;
         for (PrintCostData rule : costDataSet) {
