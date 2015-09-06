@@ -80,8 +80,7 @@ public class PrintCostCalculator implements CostCalculator {
             throw new PrintCalculationException("No valid paper size found to calculate cost");
         }
         BigDecimal finalCost = BigDecimal.ZERO;
-        for (Iterator<PrintCostData> it = costDataSet.iterator(); it.hasNext(); ) {
-            PrintCostData rule = it.next();
+        for (PrintCostData rule : costDataSet) {
             if (rule != null && rule.equals(printJobCostData)) {
                 logger.debug("Applying print cost rule {}", rule);
                 finalCost = finalCost.add(BigDecimal.valueOf(blackAndWhitePages).multiply(rule.getBlackAndWhitePaperCost()).

@@ -104,20 +104,17 @@ public class SchoolPrintJobTest {
     @Test
     public void testConcurrentAccess() throws Exception{
         AtomicInteger atomicInteger=new AtomicInteger(0);
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
-                    assertCost(4.75,cost);
-                    atomicInteger.getAndAdd(1);
-                } catch (PrintCalculationException e) {
-                    e.printStackTrace();
-                } catch (InvalidInputException e) {
-                    e.printStackTrace();
-                }
-
+        Thread thread=new Thread(() -> {
+            try {
+                BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
+                assertCost(4.75,cost);
+                atomicInteger.getAndAdd(1);
+            } catch (PrintCalculationException e) {
+                e.printStackTrace();
+            } catch (InvalidInputException e) {
+                e.printStackTrace();
             }
+
         });
 
         ExecutorService executorService = Executors.newFixedThreadPool(50);

@@ -43,7 +43,7 @@ public interface PrintJob {
     /**
      * Get the total cost of the print job.
      *
-     * @return
+     * @return cost of priting the job.
      */
     BigDecimal cost() throws PrintCalculationException;
 
