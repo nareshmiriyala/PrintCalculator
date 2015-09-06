@@ -25,5 +25,14 @@ public class Paper {
     public enum SIZE {
         A4, LETTER, A3
     }
+    /**
+     * Enum for Paper Side
+     */
+    public enum SIDE{
+        SINGLE_SIDED,DOUBLE_SIDED
+    }
+    public enum COLOUR_TYPE{
+        BLACK_AND_WHITE,COLOUR
+    }
 
 }

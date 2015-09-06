@@ -1,12 +1,16 @@
 package com.papercut.helper;
 
 import com.papercut.exceptions.PrintCalculationException;
+import com.papercut.model.PrintCostData;
 import com.papercut.print.Paper;
 import com.papercut.print.PrintJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Helper class to calculate the total cost of printing a job.
@@ -16,6 +20,7 @@ import java.math.BigDecimal;
 public class PrintCostCalculator implements CostCalculator {
     private static final Logger logger = LoggerFactory.getLogger(PrintCostCalculator.class);
     private volatile static PrintCostCalculator uniqueInstance;
+    private final static Set<PrintCostData> costDataSet = new HashSet<>();
 
     /**
      * Constructor should be private for a singleton class
@@ -34,70 +39,56 @@ public class PrintCostCalculator implements CostCalculator {
             synchronized (PrintCostCalculator.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = new PrintCostCalculator();
+                    uniqueInstance.initialisePrintCostData();
                 }
             }
         }
         return uniqueInstance;
     }
 
-    /**
-     * Enum for storing the single sided page print costs.
-     */
-    private enum A4_SINGLE_SIDED_COST {
-        BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.15)), COLOUR_PAGE(BigDecimal.valueOf(0.25));
-        private BigDecimal cost;
-
-        A4_SINGLE_SIDED_COST(BigDecimal cost) {
-            this.cost = cost;
-        }
-
-        public BigDecimal getCost() {
-            return cost;
-        }
-
+    private void initialisePrintCostData() {
+        insertPrintCostData(new PrintCostData(Paper.SIZE.A4, Paper.SIDE.SINGLE_SIDED, BigDecimal.valueOf(.15), BigDecimal.valueOf(.25)));
+        insertPrintCostData(new PrintCostData(Paper.SIZE.A4, Paper.SIDE.DOUBLE_SIDED, BigDecimal.valueOf(.10), BigDecimal.valueOf(.20)));
     }
 
-    /**
-     * Enum for the double sided page print costs.
-     */
-    private enum A4_DOUBLE_SIDED_COST {
-        BLACK_AND_WHITE_PAGE(BigDecimal.valueOf(0.10)), COLOUR_PAGE(BigDecimal.valueOf(0.20));
-        private BigDecimal cost;
-
-        A4_DOUBLE_SIDED_COST(BigDecimal cost) {
-            this.cost = cost;
-        }
-
-        public BigDecimal getCost() {
-            return cost;
-        }
-
+    @Override
+    public void insertPrintCostData(PrintCostData printCostData) {
+        costDataSet.add(printCostData);
     }
 
     /**
      * Calculate the total cost of the printing
      *
-     * @param schoolPrintJob- input the schoolPrintJob containing the required values for cost calculation
+     * @param printJob- input the printJob containing the required values for cost calculation
      * @return cost of printing the job.
      */
-    public BigDecimal calculateCost(PrintJob schoolPrintJob) throws PrintCalculationException {
-        if (schoolPrintJob == null) {
-            logger.error("SchoolPrintJob can't be null");
-            throw new PrintCalculationException("SchoolPrintJob can't be null");
+    public BigDecimal calculateCost(PrintJob printJob) throws PrintCalculationException {
+        if (printJob == null) {
+            logger.error("PrintJob can't be null");
+            throw new PrintCalculationException("PrintJob can't be null");
         }
-        int colorPages = schoolPrintJob.getNoOfColorPages();
-        int blackAndWhitePages = schoolPrintJob.getTotalNumberOfPages() - colorPages;
-        logger.debug(" Started calculating the cost of the schoolPrintJob {}", schoolPrintJob);
-        if (schoolPrintJob.getPaperSize() != null && schoolPrintJob.getPaperSize().equals(Paper.SIZE.A4)) {
-            if (schoolPrintJob.isDoubleSided()) {
-                return BigDecimal.valueOf(blackAndWhitePages).multiply(A4_DOUBLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
-                        add(BigDecimal.valueOf(colorPages).multiply(A4_DOUBLE_SIDED_COST.COLOUR_PAGE.getCost()));
-            } else {
-                return BigDecimal.valueOf(blackAndWhitePages).multiply(A4_SINGLE_SIDED_COST.BLACK_AND_WHITE_PAGE.getCost()).
-                        add(BigDecimal.valueOf(colorPages).multiply(A4_SINGLE_SIDED_COST.COLOUR_PAGE.getCost()));
+        if (printJob.getPaperSize() == null) {
+            logger.error("PrintJob paper size can't be null");
+            throw new PrintCalculationException("PrintJob paper size can't be null");
+        }
+        int colorPages = printJob.getNoOfColorPages();
+        int blackAndWhitePages = printJob.getTotalNumberOfPages() - colorPages;
+        logger.debug(" Started calculating the cost of the printJob {}", printJob);
+        PrintCostData printJobCostData = new PrintCostData(printJob.getPaperSize(), printJob.isDoubleSided() ? Paper.SIDE.DOUBLE_SIDED : Paper.SIDE.SINGLE_SIDED);
+        if (!costDataSet.contains(printJobCostData)) {
+            logger.error("Can't find any cost rule to apply for paper size {} ", printJob.getPaperSize());
+            throw new PrintCalculationException("No valid paper size found to calculate cost");
+        }
+        BigDecimal finalCost = BigDecimal.ZERO;
+        for (Iterator<PrintCostData> it = costDataSet.iterator(); it.hasNext(); ) {
+            PrintCostData rule = it.next();
+            if (rule != null && rule.equals(printJobCostData)) {
+                logger.debug("Applying print cost rule {}", rule);
+                finalCost = finalCost.add(BigDecimal.valueOf(blackAndWhitePages).multiply(rule.getBlackAndWhitePaperCost()).
+                        add(BigDecimal.valueOf(colorPages).multiply(rule.getColorPaperCost())));
             }
         }
-        logger.error("Can't find any cost rule to apply for paper size {} ", schoolPrintJob.getPaperSize());
-        throw new PrintCalculationException("No valid paper size found to calculate cost");
+        return finalCost;
     }
+
 }
