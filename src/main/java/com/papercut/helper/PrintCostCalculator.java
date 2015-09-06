@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -30,7 +29,7 @@ public class PrintCostCalculator implements CostCalculator {
     }
 
     /**
-     * Create a unique instance of the PrintCostCalculator.
+     * Create a unique instance of the PrintCostCalculator and initialise the cost data for printing.
      *
      * @return a single unique instance.
      */
@@ -39,6 +38,7 @@ public class PrintCostCalculator implements CostCalculator {
             synchronized (PrintCostCalculator.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = new PrintCostCalculator();
+                    //initialise cost data.
                     uniqueInstance.initialisePrintCostData();
                 }
             }
@@ -46,11 +46,18 @@ public class PrintCostCalculator implements CostCalculator {
         return uniqueInstance;
     }
 
+    /**
+     * Initialise cost data for printing.
+     */
     private void initialisePrintCostData() {
         insertPrintCostData(new PrintCostData(Paper.SIZE.A4, Paper.SIDE.SINGLE_SIDED, BigDecimal.valueOf(.15), BigDecimal.valueOf(.25)));
         insertPrintCostData(new PrintCostData(Paper.SIZE.A4, Paper.SIDE.DOUBLE_SIDED, BigDecimal.valueOf(.10), BigDecimal.valueOf(.20)));
     }
 
+    /**
+     * Insert print cost data to the costDataSet.
+     * @param printCostData
+     */
     @Override
     public void insertPrintCostData(PrintCostData printCostData) {
         costDataSet.add(printCostData);
