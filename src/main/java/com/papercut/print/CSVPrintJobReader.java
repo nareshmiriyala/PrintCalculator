@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to read print jobs from CSV file.
- * Its a Singleton class.
- * Created by nareshm on 4/09/2015.
+ * Class to read print jobs from CSV file. Its a Singleton class. Created by
+ * nareshm on 4/09/2015.
  */
 public class CSVPrintJobReader implements PrintJobReader {
+
     private static final Logger logger = LoggerFactory.getLogger(CSVPrintJobReader.class);
     private volatile static PrintJobReader uniqueInstance;
 
@@ -47,7 +47,7 @@ public class CSVPrintJobReader implements PrintJobReader {
     }
 
     @Override
-    public List<PrintJob> createPrintJobs(String csvFile) throws PrintCalculationException {
+    public List<PrintJob> createPrintJobs(String csvFile) throws PrintCalculationException, InvalidInputException {
         if (csvFile == null || csvFile.isEmpty()) {
             logger.error("FileName is invalid {}", csvFile);
             throw new PrintCalculationException("CSV FileName is invalid");
@@ -68,16 +68,13 @@ public class CSVPrintJobReader implements PrintJobReader {
                 //default value of doubleSided is false if nothing provided in the csv file
                 boolean doubleSided = Boolean.parseBoolean(record.get(2).trim().isEmpty() ? "false" : record.get(2).trim());
                 //build the A4 size printer job
-                printJobs.add(new SchoolPrintJob.SchoolPrintJobBuilder(jobId).withJobName("A4_PRINT_JOB_"+jobId).withTotalPrintPages(totalNumberOfPages).withPaperSize(Paper.SIZE.A4).withNoOfColorPages(noOfColorPages).isDoubleSidedPrint(doubleSided).build());
+                printJobs.add(new SchoolPrintJob.SchoolPrintJobBuilder(jobId).withJobName("A4_PRINT_JOB_" + jobId).withTotalPrintPages(totalNumberOfPages).withPaperSize(Paper.SIZE.A4).withNoOfColorPages(noOfColorPages).isDoubleSidedPrint(doubleSided).build());
                 //increment jobId
                 jobId++;
             }
         } catch (FileNotFoundException e) {
             logger.error("Not able to find the file {}", csvFile);
             throw new PrintCalculationException("Not able to find the file");
-        } catch (InvalidInputException e) {
-            logger.error("Input value to SchoolPrintJob is Invalid");
-            throw new PrintCalculationException("Input value to SchoolPrintJob is Invalid");
         } catch (IOException | ArrayIndexOutOfBoundsException e) {
             logger.error("Error reading the csv file {}", csvFile);
             throw new PrintCalculationException("Error reading the csv file");
@@ -112,5 +109,3 @@ public class CSVPrintJobReader implements PrintJobReader {
         throw new PrintCalculationException("CSV record is invalid");
     }
 }
-
-

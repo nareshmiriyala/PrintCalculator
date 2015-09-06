@@ -18,8 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.Assert.*;
 
 /**
- * Unit Test for SchoolPrintJobTest.
- * Created by nareshm on 5/09/2015.
+ * Unit Test for SchoolPrintJobTest. Created by nareshm on 5/09/2015.
  */
 public class SchoolPrintJobTest {
 
@@ -36,8 +35,8 @@ public class SchoolPrintJobTest {
 
     /**
      * Test when total noOfColorPages and doubleSided value not provided.
-     * Default value of noOfColorPages is 0 and doubleSided is false,hence cost will be 10*15=1.5
-     * All the pages are black and white.
+     * Default value of noOfColorPages is 0 and doubleSided is false,hence cost
+     * will be 10*15=1.5 All the pages are black and white.
      *
      * @throws Exception
      */
@@ -54,7 +53,8 @@ public class SchoolPrintJobTest {
     }
 
     /**
-     * Test should throw exception as the noOfColorPages is greater than the totalNoOfPages
+     * Test should throw exception as the noOfColorPages is greater than the
+     * totalNoOfPages
      *
      * @throws Exception
      */
@@ -65,7 +65,8 @@ public class SchoolPrintJobTest {
     }
 
     /**
-     * Test when totalNoOfPages,noOfColorPages,doubleSided values are not provided
+     * Test when totalNoOfPages,noOfColorPages,doubleSided values are not
+     * provided
      *
      * @throws Exception
      */
@@ -102,12 +103,12 @@ public class SchoolPrintJobTest {
     }
 
     @Test
-    public void testConcurrentAccess() throws Exception{
-        AtomicInteger atomicInteger=new AtomicInteger(0);
-        Thread thread=new Thread(() -> {
+    public void testConcurrentAccess() throws Exception {
+        AtomicInteger atomicInteger = new AtomicInteger(0);
+        Thread thread = new Thread(() -> {
             try {
                 BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
-                assertCost(4.75,cost);
+                assertCost(4.75, cost);
                 atomicInteger.getAndAdd(1);
             } catch (PrintCalculationException e) {
                 e.printStackTrace();
@@ -118,12 +119,12 @@ public class SchoolPrintJobTest {
         });
 
         ExecutorService executorService = Executors.newFixedThreadPool(50);
-        for(int i=0;i<100000;i++)
-        executorService.submit(thread);
+        for (int i = 0; i < 100000; i++) {
+            executorService.submit(thread);
+        }
         executorService.shutdown();
         executorService.awaitTermination(5, TimeUnit.MINUTES);
-        assertEquals(100000,atomicInteger.get());
+        assertEquals(100000, atomicInteger.get());
     }
-
 
 }

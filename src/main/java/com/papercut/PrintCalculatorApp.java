@@ -1,5 +1,6 @@
 package com.papercut;
 
+import com.papercut.exceptions.InvalidInputException;
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.CSVPrintJobReader;
 import com.papercut.print.PrintJob;
@@ -9,13 +10,15 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
- * This program takes a list of A4 print jobs and calculates the
- * cost of each job, given the total number of pages, number of colour pages and whether printing is double sided.
- * Created by nareshm on 5/09/2015.
+ * This class takes a list of A4 print jobs and calculates the cost of each job,
+ * given the total number of pages, number of colour pages and whether printing
+ * is double sided. Created by nareshm on 5/09/2015.
  */
 public class PrintCalculatorApp {
+
     private static final Logger logger = LoggerFactory.getLogger(PrintCalculatorApp.class);
     public static final String CSV_FILE = "src/test/resources/printjobs.csv";
 
@@ -33,8 +36,9 @@ public class PrintCalculatorApp {
             System.out.println("Total cost of all print  $" + Utility.getRoundedValue(totalCost));
         } catch (PrintCalculationException e) {
             logger.error("Error during Print Calculation", e);
+        } catch (InvalidInputException ex) {
+            logger.error("Invalid data in the CSV File", ex);
         }
     }
-
 
 }

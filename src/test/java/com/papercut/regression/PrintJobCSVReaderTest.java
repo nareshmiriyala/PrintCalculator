@@ -12,10 +12,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Integration test for CSVPrintJobReader class.
- * Created by nareshm on 5/09/2015.
+ * Integration test for CSVPrintJobReader class. Created by nareshm on
+ * 5/09/2015.
  */
 public class PrintJobCSVReaderTest {
+
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 

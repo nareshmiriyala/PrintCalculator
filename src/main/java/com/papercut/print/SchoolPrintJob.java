@@ -1,6 +1,5 @@
 package com.papercut.print;
 
-
 import com.papercut.exceptions.InvalidInputException;
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.helper.PrintCostCalculator;
@@ -10,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 
 /**
- * An class which initiates and executes a school print job.
- * Created by nareshm on 4/09/2015.
+ * An class which initiates and executes a school print job. Created by nareshm
+ * on 4/09/2015.
  */
 public class SchoolPrintJob implements PrintJob {
 
@@ -45,7 +44,6 @@ public class SchoolPrintJob implements PrintJob {
         return jobId;
     }
 
-
     /**
      * Gets the name of the document to be printed.
      *
@@ -56,11 +54,10 @@ public class SchoolPrintJob implements PrintJob {
         return jobName;
     }
 
-
     /**
      * Gets the paper size of the document to be printed.
      *
-     * @return the paper size  of the document to be printed.
+     * @return the paper size of the document to be printed.
      */
     @Override
     public Paper.SIZE getPaperSize() {
@@ -102,7 +99,6 @@ public class SchoolPrintJob implements PrintJob {
         return doubleSided;
     }
 
-
     /**
      * Get the total number of pages printed by this print job
      *
@@ -113,7 +109,6 @@ public class SchoolPrintJob implements PrintJob {
         return totalNumberOfPages;
     }
 
-
     /**
      * Gets the total number of color pages printed in this job
      *
@@ -122,7 +117,6 @@ public class SchoolPrintJob implements PrintJob {
     public int getNoOfColorPages() {
         return noOfColorPages;
     }
-
 
     private SchoolPrintJob(SchoolPrintJobBuilder schoolPrintJobBuilder) {
         this.jobId = schoolPrintJobBuilder.jobId;
@@ -153,7 +147,8 @@ public class SchoolPrintJob implements PrintJob {
         /**
          * Set the id of the document to be printed.
          *
-         * @param jobId the id of the document to be printed,mandatory for the builder.
+         * @param jobId the id of the document to be printed,mandatory for the
+         * builder.
          */
         public SchoolPrintJobBuilder(long jobId) throws InvalidInputException {
             validateInputNumber(jobId);
@@ -171,8 +166,8 @@ public class SchoolPrintJob implements PrintJob {
         }
 
         /**
-         * Sets the paper size of the document to be printed.
-         * The document paperSize cannot be null
+         * Sets the paper size of the document to be printed. The document
+         * paperSize cannot be null
          *
          * @param paperSize the paperSize of the document to be printed
          */
@@ -194,7 +189,8 @@ public class SchoolPrintJob implements PrintJob {
         /**
          * Sets the total number of pages printed
          *
-         * @param totalNumberOfPages - total number of pages being printed by the job.
+         * @param totalNumberOfPages - total number of pages being printed by
+         * the job.
          */
         public SchoolPrintJobBuilder withTotalPrintPages(int totalNumberOfPages) throws InvalidInputException {
             validateInputNumber(totalNumberOfPages);
@@ -205,7 +201,8 @@ public class SchoolPrintJob implements PrintJob {
         /**
          * Set the total of number of color pages printed.
          *
-         * @param noOfColorPages - no of color pages,this value should be less than equal to totalNumberOfPages
+         * @param noOfColorPages - no of color pages,this value should be less
+         * than equal to totalNumberOfPages
          */
         public SchoolPrintJobBuilder withNoOfColorPages(int noOfColorPages) throws InvalidInputException {
             if (noOfColorPages > totalNumberOfPages) {
@@ -223,7 +220,7 @@ public class SchoolPrintJob implements PrintJob {
     }
 
     /**
-     * Validate that the input number is not less than  0
+     * Validate that the input number is not less than 0
      *
      * @param jobId -jobid of the job the being printed.
      * @throws InvalidInputException
@@ -237,8 +234,12 @@ public class SchoolPrintJob implements PrintJob {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SchoolPrintJob schoolPrintJob = (SchoolPrintJob) o;
 
@@ -253,12 +254,11 @@ public class SchoolPrintJob implements PrintJob {
 
     @Override
     public String toString() {
-        return "Job ID=" + jobId +
-                ", Job Name='" + jobName + '\'' +
-                ", Paper Size=" + paperSize +
-                ", Total No Of Pages=" + totalNumberOfPages +
-                ", No of Color Pages=" + noOfColorPages +
-                ", Is Double Sided=" + doubleSided
-                ;
+        return "Job ID=" + jobId
+                + ", Job Name='" + jobName + '\''
+                + ", Paper Size=" + paperSize
+                + ", Total No Of Pages=" + totalNumberOfPages
+                + ", No of Color Pages=" + noOfColorPages
+                + ", Is Double Sided=" + doubleSided;
     }
 }

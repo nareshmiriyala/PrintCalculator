@@ -1,5 +1,6 @@
 package com.papercut.regression;
 
+import com.papercut.exceptions.InvalidInputException;
 import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.CSVPrintJobReader;
 import com.papercut.print.PrintJob;
@@ -12,12 +13,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Print Calculator App Test.
- * Created by nareshm on 4/09/2015.
+ * Print Calculator App Test. Created by nareshm on 4/09/2015.
  */
 public class PrintCalculator {
+
     @Test
-    public void testApp() throws PrintCalculationException {
+    public void testApp() throws PrintCalculationException, InvalidInputException {
         List<PrintJob> printJobs = CSVPrintJobReader.getInstance().createPrintJobs("src/test/resources/printjobs.csv");
         BigDecimal totalCost = BigDecimal.ZERO;
         for (PrintJob printJob : printJobs) {

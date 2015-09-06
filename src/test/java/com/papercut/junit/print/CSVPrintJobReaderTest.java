@@ -9,8 +9,7 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for CSVPrintJobReader class
- * Created by nareshm on 5/09/2015.
+ * Unit test for CSVPrintJobReader class Created by nareshm on 5/09/2015.
  */
 public class CSVPrintJobReaderTest {
 

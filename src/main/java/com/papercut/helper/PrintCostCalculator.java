@@ -12,11 +12,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Helper class to calculate the total cost of printing a job.
- * Its a Singleton class.
- * Created by nareshm on 4/09/2015.
+ * Helper class to calculate the total cost of printing a job. Its a Singleton
+ * class. Created by nareshm on 4/09/2015.
  */
 public class PrintCostCalculator implements CostCalculator {
+
     private static final Logger logger = LoggerFactory.getLogger(PrintCostCalculator.class);
     private volatile static PrintCostCalculator uniqueInstance;
     private final static Set<PrintCostData> costDataSet = new HashSet<>();
@@ -29,7 +29,8 @@ public class PrintCostCalculator implements CostCalculator {
     }
 
     /**
-     * Create a unique instance of the PrintCostCalculator and initialise the cost data for printing.
+     * Create a unique instance of the PrintCostCalculator and initialise the
+     * cost data for printing.
      *
      * @return a single unique instance.
      */
@@ -67,7 +68,8 @@ public class PrintCostCalculator implements CostCalculator {
     /**
      * Calculate the total cost of the printing
      *
-     * @param printJob- input the printJob containing the required values for cost calculation
+     * @param printJob- input the printJob containing the required values for
+     * cost calculation
      * @return cost of printing the job.
      */
     public BigDecimal calculateCost(PrintJob printJob) throws PrintCalculationException {

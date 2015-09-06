@@ -15,8 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 /**
- * Test the printing cost calculator class
- * Created by nareshm on 5/09/2015.
+ * Test the printing cost calculator class Created by nareshm on 5/09/2015.
  */
 @RunWith(PowerMockRunner.class)
 public class PrintCostCalculatorTest {

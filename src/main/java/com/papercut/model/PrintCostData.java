@@ -7,9 +7,9 @@ import com.papercut.print.Paper.SIZE;
 import java.math.BigDecimal;
 
 /**
- * Class to store the printing cost data.
- * Two PrintCostData objects are equal only when paperSize and paperSide values are equal.
- * Created by nareshm on 6/09/2015.
+ * Class to store the printing cost data. Two PrintCostData objects are equal
+ * only when paperSize and paperSide values are equal. Created by nareshm on
+ * 6/09/2015.
  */
 public class PrintCostData {
 
@@ -76,12 +76,18 @@ public class PrintCostData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
 
         PrintCostData printCostData = (PrintCostData) o;
 
-        if (this.paperSize != printCostData.paperSize) return false;
+        if (this.paperSize != printCostData.paperSize) {
+            return false;
+        }
         return this.paperSide == printCostData.paperSide;
 
     }
@@ -95,11 +101,11 @@ public class PrintCostData {
 
     @Override
     public String toString() {
-        return "PrintCostData{" +
-                "paperSize=" + paperSize +
-                ", paperSide=" + paperSide +
-                ", blackAndWhitePaperCost=" + blackAndWhitePaperCost +
-                ", colorPaperCost=" + colorPaperCost +
-                '}';
+        return "PrintCostData{"
+                + "paperSize=" + paperSize
+                + ", paperSide=" + paperSide
+                + ", blackAndWhitePaperCost=" + blackAndWhitePaperCost
+                + ", colorPaperCost=" + colorPaperCost
+                + '}';
     }
 }

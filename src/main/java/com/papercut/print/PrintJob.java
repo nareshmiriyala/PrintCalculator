@@ -5,10 +5,11 @@ import com.papercut.exceptions.PrintCalculationException;
 import java.math.BigDecimal;
 
 /**
- * Interface to represent the operations of the Print Job
- * Created by nareshm on 4/09/2015.
+ * Interface to represent the operations of the Print Job Created by nareshm on
+ * 4/09/2015.
  */
 public interface PrintJob {
+
     /**
      * Get the job id
      *
