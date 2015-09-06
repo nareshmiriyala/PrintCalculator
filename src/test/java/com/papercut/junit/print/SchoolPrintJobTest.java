@@ -1,6 +1,7 @@
 package com.papercut.junit.print;
 
 import com.papercut.exceptions.InvalidInputException;
+import com.papercut.exceptions.PrintCalculationException;
 import com.papercut.print.Paper;
 import com.papercut.print.SchoolPrintJob;
 import com.papercut.util.Utility;
@@ -9,6 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
@@ -94,6 +99,33 @@ public class SchoolPrintJobTest {
     @Test
     public void testEqualsFailure() throws Exception {
         assertFalse(new SchoolPrintJob.SchoolPrintJobBuilder(555).build().equals(new SchoolPrintJob.SchoolPrintJobBuilder(451).build()));
+    }
+
+    @Test
+    public void testConcurrentAccess() throws Exception{
+        AtomicInteger atomicInteger=new AtomicInteger(0);
+        Thread thread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BigDecimal cost = new SchoolPrintJob.SchoolPrintJobBuilder(1).withPaperSize(Paper.SIZE.A4).withTotalPrintPages(25).withNoOfColorPages(10).isDoubleSidedPrint(false).build().cost();
+                    assertCost(4.75,cost);
+                    atomicInteger.getAndAdd(1);
+                } catch (PrintCalculationException e) {
+                    e.printStackTrace();
+                } catch (InvalidInputException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        ExecutorService executorService = Executors.newFixedThreadPool(50);
+        for(int i=0;i<100000;i++)
+        executorService.submit(thread);
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.MINUTES);
+        assertEquals(100000,atomicInteger.get());
     }
 
 
